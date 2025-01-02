@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mal0 Web Interactive</title>
+  <style>
+    body {
+      background: black;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    .glitch {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 2px 0 red, -2px 0 blue;
+      animation: glitch 1s infinite;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 red, -2px 0 blue; }
+      25% { text-shadow: -2px 0 red, 2px 0 blue; }
+      50% { text-shadow: 0 2px red, 0 -2px blue; }
+      75% { text-shadow: 2px 2px red, -2px -2px blue; }
+      100% { text-shadow: -2px -2px red, 2px 2px blue; }
+    }
+
+    .hidden-message {
+      display: none;
+      color: red;
+      font-size: 2rem;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .reveal-button {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: none;
+      border: 2px solid #00ff00;
+      color: #00ff00;
+      font-size: 1rem;
+      padding: 10px 20px;
+      cursor: pointer;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
+
+    .message {
+      position: absolute;
+      display: none;
+      font-size: 1.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px;
+      border: 1px solid red;
+      color: red;
+      border-radius: 5px;
+    }
+
+    #text-follow {
+      position: absolute;
+      font-size: 1.2rem;
+      color: red;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="glitch">MAL0 IS WATCHING YOU</div>
+  <div class="hidden-message">You cannot escape...</div>
+  <button class="reveal-button" onclick="revealMessage()">Click if you dare...</button>
+  <div class="message" id="randomMessage"></div>
+  <div id="text-follow">👁 Watching...</div>
+
+  <script>
+    // Follow Cursor Text
+    const textFollow = document.getElementById('text-follow');
+    document.addEventListener('mousemove', (e) => {
+      textFollow.style.top = `${e.clientY + 20}px`;
+      textFollow.style.left = `${e.clientX + 20}px`;
+      textFollow.style.opacity = Math.random() > 0.5 ? 1 : 0.5;
+    });
+
+    // Reveal Message
+    function revealMessage() {
+      const message = document.querySelector('.hidden-message');
+      message.style.display = 'block';
+
+      setTimeout(() => {
+        alert('Too late, your information is mine.');
+        document.body.style.background = 'darkred';
+        document.querySelector('.glitch').textContent = 'RUN NOW';
+      }, 3000);
+    }
+
+    // Random Message Popups
+    const randomMessages = [
+      'I see you.',
+      'Run while you can.',
+      'It’s too late now.',
+      'Mal0 is here.',
+    ];
+
+    setInterval(() => {
+      const randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+      const messageDiv = document.getElementById('randomMessage');
+      messageDiv.style.display = 'block';
+      messageDiv.textContent = randomMessage;
+      messageDiv.style.top = `${Math.random() * window.innerHeight}px`;
+      messageDiv.style.left = `${Math.random() * window.innerWidth}px`;
+
+      setTimeout(() => {
+        messageDiv.style.display = 'none';
+      }, 3000);
+    }, Math.random() * (10000 - 5000) + 5000);
+
+    // Keyboard Interactions
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        alert('You cannot escape.');
+      } else if (e.key === ' ') {
+        document.body.style.background = document.body.style.background === 'black' ? 'darkred' : 'black';
+      }
+    });
+
+    // Glitch Effect with Keypress
+    document.addEventListener('keypress', () => {
+      const glitchText = document.querySelector('.glitch');
+      glitchText.textContent = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+    });
+  </script>
+</body>
+</html>
+
+
